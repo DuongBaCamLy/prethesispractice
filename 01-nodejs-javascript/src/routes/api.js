@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUsers } = require('../controllers/userController');
+const { createUsers, handleLogin } = require('../controllers/userController');
 
 const routerAPI = express.Router();
 
@@ -10,5 +10,7 @@ routerAPI.get("/", (req, res) => {
 
 //định nghĩa route post
 routerAPI.post("/register",createUsers);
+
+routerAPI.post("/login",handleLogin);
 
 module.exports = routerAPI; //export default

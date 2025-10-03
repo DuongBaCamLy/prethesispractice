@@ -5,6 +5,7 @@ import './styles/global.css'
 import Register from './pages/register.jsx'
 import UserPage from './pages/user.jsx'  
 import Homepage from './pages/home.jsx'        
+import LoginPage from './pages/login.jsx'
 
 
 
@@ -33,6 +34,9 @@ import { createBrowserRouter,
     },
     {    path: "/register", 
          element: <Register/>
+    },
+    {    path: "/Login", 
+         element: <LoginPage/>
     },
   ]);
     
