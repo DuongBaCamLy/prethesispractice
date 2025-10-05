@@ -4,9 +4,9 @@ const instance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 // alter defaults after instance has been created
-//instance.defaults.headers.common['Authorization'] = 'AUTH_TOKEN';
 //add a request interceptor
 instance.interceptors.request.use(function (config) {
+    config.headers.Authorization = `Bearer ${localStorage.getItem("access_token")}`;
     return config;
 }, function (error) {
     return Promise.reject(error);
