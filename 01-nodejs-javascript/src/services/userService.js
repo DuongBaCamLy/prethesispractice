@@ -8,6 +8,17 @@ require('dotenv').config();
 
 const createUserService = async (name,email,password) => {
     try{
+    //check email exist
+    const user = await User.findOne({email});
+    if(user){
+        console.log(`>>email already in use, chon email khac:${email}`);
+        return null; //de phan hashword ko chay nua
+    }
+
+
+
+
+
     //hash user password
     const hashPassword = await bcrypt.hash(password,saltRounds);
     //save user to db
@@ -73,6 +84,17 @@ const loginService = async (email1,password) => {
     }
 }
 
+const getUserService = async () => {
+    try{
+    let result = await User.find({})
+        return result;
+
+    }catch(error){
+        console.log(error);
+        return null;
+    }
+}
+
 module.exports = {
-    createUserService, loginService
+    createUserService, loginService, getUserService
 }
