@@ -4,17 +4,16 @@ const auth = require('../middleware/auth');
 
 const routerAPI = express.Router();
 
-routerAPI.all("",auth);
-
-// Định nghĩa route GET /
-routerAPI.get("/", (req, res) => {
-  return res.status(200).json("Hello world API");
+// ===== Public routes (không cần token) =====
+routerAPI.get('/', (req, res) => {
+  return res.status(200).json('Hello world API');
 });
 
-//định nghĩa route post
-routerAPI.post("/register",createUsers);
+routerAPI.post('/register', createUsers);
+routerAPI.post('/login', handleLogin);
 
-routerAPI.post("/login",handleLogin);
+// ===== Protected routes (cần token) =====
+routerAPI.use(auth);         // <-- từ đây trở xuống mới cần token
+routerAPI.get('/user', getUser);
 
-routerAPI.get("/user",getUser);
-module.exports = routerAPI; //export default
+module.exports = routerAPI;
