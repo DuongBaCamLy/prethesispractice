@@ -1,10 +1,10 @@
 const express = require('express');
 const { createUsers, handleLogin, getUser } = require('../controllers/userController');
-const delay = require('../middleware/delay');
+const auth = require('../middleware/auth');
 
 const routerAPI = express.Router();
 
-routerAPI.all("",delay);
+routerAPI.all("",auth);
 
 // Định nghĩa route GET /
 routerAPI.get("/", (req, res) => {

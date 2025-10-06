@@ -53,7 +53,7 @@ const loginService = async (email1,password) => {
                     email: user.email,
                     name: user.name
                 }
-                const acess_token = jwt.sign(
+                const access_token = jwt.sign(
                     payload,
                     process.env.JWT_SECRET,
                     {
@@ -64,7 +64,7 @@ const loginService = async (email1,password) => {
                 //Create access token
                 return {
                     EC:0,
-                    acess_token,
+                    access_token,
                     user:{
                         email: user.email,
                         name: user.name
