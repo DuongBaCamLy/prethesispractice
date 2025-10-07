@@ -7,26 +7,27 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const navigate= useNavigate();
-    const onFinish = async (values) => {
-      const {email, password}= values;
-
-
-      const res= await loginApi(email, password);
-      debugger
-      if(res && res.EC===0){
-        localStorage.setItem("access_token", res.access_token)
-        notification.success({
-          message:"LOGIN USER",
-          description:"Success"
-        });
-        navigate("/");
-      }else{
-        notification.error({
-          message:"LOGIN FAIL",
-          description: res ?.EM ??"Error"
-        })
-      }
-    };
+    const onFinish = async ({ email, password }) => {
+  try {
+    const res = await loginApi(email, password); // res = axios response
+    const data = res?.data;
+    if (data?.EC === 0) {
+      localStorage.setItem('access_token', data.access_token);
+      notification.success({ message: 'LOGIN USER', description: 'Success' });
+      navigate('/user');
+    } else {
+      notification.error({
+        message: 'LOGIN FAIL',
+        description: data?.EM ?? 'Sai email hoặc mật khẩu',
+      });
+    }
+  } catch (e) {
+    notification.error({
+      message: 'LOGIN FAIL',
+      description: e?.response?.data?.message || e.message || 'Error',
+    });
+  }
+};
  return (
     <div style={{ margin: '50px' }}>
       <Form

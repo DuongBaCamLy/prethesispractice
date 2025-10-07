@@ -1,27 +1,23 @@
-import { Table } from 'antd';
+import { notification, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import { getUserApi } from '../util/api';
 
 const UserPage = () => {
-  const [dataSource, setDataSource] = useState([]);
+  const [dataSource, setDataSource] = useState([]); // ✅ mặc định là []
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await getUserApi();  // axios.get() → trả response object
-        console.log(">>> API response:", res.data);
-
-        // ✅ kiểm tra dữ liệu thực tế trả về từ backend
-        if (res.data?.DT && Array.isArray(res.data.DT)) {
-          setDataSource(res.data.DT);  // nếu backend trả { DT: [ ... ] }
-        } else if (Array.isArray(res.data)) {
-          setDataSource(res.data);     // nếu backend trả trực tiếp [ ... ]
-        } else {
-          setDataSource([]);           // fallback để tránh crash
-        }
+        const res = await getUserApi();
+        // ✅ res có thể là { data: [...] } hoặc là mảng trực tiếp
+        const users = Array.isArray(res) ? res : res?.data || [];
+        setDataSource(users);
       } catch (error) {
-        console.error("Fetch user error:", error);
-        setDataSource([]);
+        console.error(error);
+        notification.error({
+          message: 'Unauthorized',
+          description: 'Token bị hết hạn hoặc không hợp lệ',
+        });
       }
     };
 
@@ -37,11 +33,10 @@ const UserPage = () => {
 
   return (
     <div style={{ padding: 50 }}>
-
       <Table
         bordered
-        rowKey="_id"       // ✅ thêm key để tránh cảnh báo
-        dataSource={dataSource}
+        rowKey="_id"
+        dataSource={Array.isArray(dataSource) ? dataSource : []} // ✅ luôn là mảng
         columns={columns}
       />
     </div>

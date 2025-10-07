@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Outlet, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const Header = () => {
+
+    const navigate = useNavigate();
     const items = [
 {
 label: <Link to ={"/HomePage"} >Home Page</Link>,
@@ -22,11 +25,16 @@ key: 'SubMenu',
 icon: <SettingOutlined />,
 children: [
 {
-label: 'Dang Nhap',
+label: <Link to={"/login"}> Dang Nhap </Link>,
 key: 'Login',
 },
-{label: 'Dang xuat',
-key: 'Logout',
+{
+    label:<span onClick={()=>{ 
+    localStorage.removeItem("access_token");
+    setCurrent('/home');
+    navigate ("/");
+    }}>Dang Xuat</span>,
+    key:'Logout',
 },
 ],
 },

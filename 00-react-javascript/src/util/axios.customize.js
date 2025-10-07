@@ -1,23 +1,32 @@
 import axios from 'axios';
-// set config defaults when creating the instance
-const instance = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
-});
-// alter defaults after instance has been created
-//add a request interceptor
-instance.interceptors.request.use(function (config) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem("access_token")}`;
+import { notification } from 'antd';
+
+const instance = axios.create({ baseURL: '' }); // dùng proxy
+
+instance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('access_token');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
-}, function (error) {
-    return Promise.reject(error);
-});
-//add a response interceptor
-instance.interceptors.response.use(function (response) {
-    return response;
-}, function (error) {
-    return Promise.reject(error);
-});
+  },
+  (error) => Promise.reject(error)
+);
 
-
+instance.interceptors.response.use(
+  (res) => res,  // hoặc res.data nếu bạn muốn
+  (error) => {
+    const st = error.response?.status;
+    const msg = error.response?.data?.message || 'Đã xảy ra lỗi';
+    if (st === 401 || st === 403) {
+      notification.error({
+        message: 'Unauthorized',
+        description: msg || 'Token bị hết hạn/hoặc không hợp lệ',
+      });
+    } else {
+      notification.error({ message: 'Error', description: msg });
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default instance;
