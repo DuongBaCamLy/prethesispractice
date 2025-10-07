@@ -3,10 +3,15 @@
 import { Button, Form, Input, notification } from 'antd';
 import { loginApi } from '../util/api';
 import { useNavigate } from 'react-router-dom';
+import { use } from 'react';
+import { useContext } from 'react';
+import { AuthContext } from '../component/context/auth.context';
+
 
 
 const LoginPage = () => {
   const navigate= useNavigate();
+  const {setAuth}= useContext(AuthContext);
     const onFinish = async ({ email, password }) => {
   try {
     const res = await loginApi(email, password); // res = axios response
@@ -14,6 +19,13 @@ const LoginPage = () => {
     if (data?.EC === 0) {
       localStorage.setItem('access_token', data.access_token);
       notification.success({ message: 'LOGIN USER', description: 'Success' });
+      setAuth({
+        isAuthenticated: true,
+        user:{
+            email:res?.user?.email ?? "",
+            name:res?.user?.name ?? ""
+        }
+      });
       navigate('/user');
     } else {
       notification.error({

@@ -12,6 +12,7 @@ import LoginPage from './pages/login.jsx'
 import { createBrowserRouter, 
          RouterProvider } 
   from "react-router-dom";
+import { AuthWrapper } from './component/context/auth.context.jsx'
 
 
   const router = createBrowserRouter([
@@ -42,7 +43,8 @@ import { createBrowserRouter,
     
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* <App /> */}
+    <AuthWrapper>
     <RouterProvider router={router} />
+    </AuthWrapper>
   </React.StrictMode>,
 )
