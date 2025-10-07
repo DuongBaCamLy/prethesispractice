@@ -1,29 +1,18 @@
-import { createContext } from "react";
-import { useState } from "react";
+// auth.context.jsx
+import { createContext, useState } from "react";
 
-export const AuthContext = createContext({
+export const AuthContext = createContext({});
+
+export const AuthWrapper = ({ children }) => {
+  const [auth, setAuth] = useState({
     isAuthenticated: false,
-    user:{
-        email:"",
-        name:""
-    }
-});
+    user: { email: "", name: "" },
+  });
+  const [appLoading, setAppLoading] = useState(true); // bắt đầu = true
 
-
-export const AuthWrapper = (props) =>{
-    const [auth, setAuth] = useState({
-        isAuthenticated: false,
-        user:{
-            email:"",
-            name:""
-        }
-    });
-    //...
-    return(
-        <AuthContext.Provider value={{
-            auth, setAuth
-        }}>
-            {props.children}
-        </AuthContext.Provider>
-    );
-}
+  return (
+    <AuthContext.Provider value={{ auth, setAuth, appLoading, setAppLoading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

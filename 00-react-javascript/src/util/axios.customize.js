@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { notification } from 'antd';
 
-const instance = axios.create({ baseURL: '' }); // dùng proxy
-
+const instance = axios.create({ 
+  baseURL: '/',              // để Vite proxy bắt /v1/...
+  withCredentials: false }); // dùng proxy
+  
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');

@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUsers, handleLogin, getUser } = require('../controllers/userController');
+const { createUsers, handleLogin, getUser, getAccount } = require('../controllers/userController');
 const auth = require('../middleware/auth');
 
 const routerAPI = express.Router();
@@ -15,5 +15,6 @@ routerAPI.post('/login', handleLogin);
 // ===== Protected routes (cần token) =====
 routerAPI.use(auth);         // <-- từ đây trở xuống mới cần token
 routerAPI.get('/user', getUser);
+routerAPI.get('/account',getAccount);
 
 module.exports = routerAPI;

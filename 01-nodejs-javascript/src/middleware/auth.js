@@ -27,8 +27,12 @@ const auth = (req, res, next) => {
         try {
             // Xác thực token
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user={
+                email:decoded.email,
+                name:decoded.name,
+                createdBy:"DuongBaCamLy"
+            }
             console.log(">>> Check token:", decoded);
-            req.user = decoded; // gắn thông tin user vào request nếu cần
             next();
         } catch (error) {
             console.error(">>> JWT verify error:", error.message);
